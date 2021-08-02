@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 const gulp = require('gulp'),
     browserSync = require('browser-sync'),
     htmlmin = require('gulp-htmlmin'),
@@ -21,14 +19,12 @@ const gulp = require('gulp'),
     uglify = require('gulp-uglify-es').default;
 //https://www.npmjs.com/package/gulp-responsive
 
-
-
 const CONFIG = {
     'MOVE_FILES': true,
     'CLEAN_DEV': true,
     'HTML_MIN': false,
     'PUG': false,
-    'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
+    'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],
 };
 
 const SRC = {
@@ -64,6 +60,7 @@ const SRC = {
         FOOTER: './src/js/footer/*.js',
         FOR: './src/js/for/**/*.js',
         FOR_ENTRY: {
+            'lk': './src/js/for/lk/lk-app.js',
             'test': './src/js/for/test/test.js'
         },
         LIBS: {
@@ -109,7 +106,6 @@ const DIST = {
     CSS: './dist/css/',
     JS: './dist/js/'
 };
-
 
 
 
