@@ -114,7 +114,9 @@ const DIST = {
 
 
 
-// https://github.com/gulpjs/gulp/blob/master/docs/recipes/rollup-with-rollup-stream.md
+//create bundle from import export:
+//https://github.com/gulpjs/gulp/blob/master/docs/recipes/rollup-with-rollup-stream.md
+//or:
 //https://webpack.js.org/guides/integrations/#gulp
 gulp.task('js_for', function () {
     return gulp
@@ -122,7 +124,7 @@ gulp.task('js_for', function () {
         .pipe(webpack({
             entry: SRC.JS.FOR_ENTRY,
             output: {
-                filename: '[name].js',
+                filename: '[name].min.js',
             },
         }))
         .pipe(gulp.dest(DEV.JS.FOR));
