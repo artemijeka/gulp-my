@@ -2,44 +2,33 @@
 
 
 
+const gulp = require('gulp'),
+    browserSync = require('browser-sync'),
+    htmlmin = require('gulp-htmlmin'),
+    clean = require('gulp-clean'),
+    scss = require('gulp-dart-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
+    cleanCss = require('gulp-clean-css'),
+    rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
+    babel = require('gulp-babel'),
+    imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant'),
+    mozjpeg = require('imagemin-mozjpeg'),
+    webp = require('imagemin-webp'),
+    extReplace = require("gulp-ext-replace"),
+    webpack = require('webpack-stream'),
+    uglify = require('gulp-uglify-es').default;
+//https://www.npmjs.com/package/gulp-responsive
+
+
+
 const CONFIG = {
     'MOVE_FILES': true,
     'CLEAN_DEV': true,
     'HTML_MIN': false,
     'PUG': false,
     'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
-};
-
-
-
-const DEV_ROOT = './dev.loc/'
-const DEV = {
-    FILES: [
-        DEV_ROOT + '*.*',
-        DEV_ROOT + 'font/**/*',
-        DEV_ROOT + '**/img/**/*.*',
-        DEV_ROOT + '**/.htaccess',
-        DEV_ROOT + '**/*.html',
-        // './src/**/*.php',
-        // './src/**/*.settings'
-    ],
-    // HTML: './dev/**/*.html',
-    CSS: {
-        ROOT: DEV_ROOT + 'css/',
-        LIBS: DEV_ROOT + 'css/libs/',
-        HEADER: [DEV_ROOT + 'css/libs/header.min.css', DEV_ROOT + 'css/header.min.css'],
-        FOOTER: [DEV_ROOT + 'css/libs/footer.min.css', DEV_ROOT + 'css/footer.min.css'],
-        FOR: [DEV_ROOT + 'css/for/'],
-    },
-    JS: {
-        ROOT: DEV_ROOT + 'js/',
-        LIBS: DEV_ROOT + 'js/libs/',
-        HEADER: [DEV_ROOT + 'js/libs/header.min.js', DEV_ROOT + 'js/header.min.js'],
-        FOOTER: [DEV_ROOT + 'js/libs/footer.min.js', DEV_ROOT + 'js/footer.min.js'],
-        FOR: [DEV_ROOT + 'js/for/'],
-    },
-    IMAGES: DEV_ROOT + 'img/',
-    FONT: [DEV_ROOT +'font/'],
 };
 
 const SRC = {
@@ -74,11 +63,44 @@ const SRC = {
         HEADER: './src/js/header/*.js',
         FOOTER: './src/js/footer/*.js',
         FOR: './src/js/for/**/*.js',
+        FOR_ENTRY: {
+            'test': './src/js/for/test/test.js'
+        },
         LIBS: {
             HEADER: './src/js/libs/header/*.js',
             FOOTER: './src/js/libs/footer/*.js',
         },
     },
+};
+
+const DEV_ROOT = './dev.loc/'
+const DEV = {
+    FILES: [
+        DEV_ROOT + '*.*',
+        DEV_ROOT + 'font/**/*',
+        DEV_ROOT + '**/img/**/*.*',
+        DEV_ROOT + '**/.htaccess',
+        DEV_ROOT + '**/*.html',
+        // './src/**/*.php',
+        // './src/**/*.settings'
+    ],
+    // HTML: './dev/**/*.html',
+    CSS: {
+        ROOT: DEV_ROOT + 'css/',
+        LIBS: DEV_ROOT + 'css/libs/',
+        HEADER: [DEV_ROOT + 'css/libs/header.min.css', DEV_ROOT + 'css/header.min.css'],
+        FOOTER: [DEV_ROOT + 'css/libs/footer.min.css', DEV_ROOT + 'css/footer.min.css'],
+        FOR: [DEV_ROOT + 'css/for/'],
+    },
+    JS: {
+        ROOT: DEV_ROOT + 'js/',
+        LIBS: DEV_ROOT + 'js/libs/',
+        HEADER: [DEV_ROOT + 'js/libs/header.min.js', DEV_ROOT + 'js/header.min.js'],
+        FOOTER: [DEV_ROOT + 'js/libs/footer.min.js', DEV_ROOT + 'js/footer.min.js'],
+        FOR: DEV_ROOT + 'js/for/',
+    },
+    IMAGES: DEV_ROOT + 'img/',
+    FONT: [DEV_ROOT + 'font/'],
 };
 
 /* PRODACTION TO DIST */
@@ -90,32 +112,24 @@ const DIST = {
 
 
 
-const gulp = require('gulp'),
-        // ftp = require('vinyl-ftp'),
-        // gutil = require('gulp-util'),
-        browserSync = require('browser-sync'),
-        // pug = require('gulp-pug'),
-        htmlmin = require('gulp-htmlmin'),
-        clean = require('gulp-clean'),
-        scss = require('gulp-dart-sass'),
-        autoprefixer = require('gulp-autoprefixer'),
-        cleanCss = require('gulp-clean-css'),
-        rename = require('gulp-rename'),
-        concat = require('gulp-concat'),
-        babel = require('gulp-babel'),
-        imagemin = require('gulp-imagemin'),
-        pngquant = require('imagemin-pngquant'),
-        mozjpeg = require('imagemin-mozjpeg'),
-        webp = require('imagemin-webp'),
-        extReplace = require("gulp-ext-replace"),
-        // ggcmq = require('gulp-group-css-media-queries'),
-        // gcmq = require('gulp-combine-media-queries'),
-        // // cmq = require('gulp-combine-media-queries'),
-        // postcss = require('gulp-postcss'),
-        // sourcemaps = require('gulp-sourcemaps'),
-        // responsive = require('gulp-responsive'),//https://www.npmjs.com/package/gulp-responsive
-        uglify = require('gulp-uglify-es').default;
-        // $ = require('gulp-load-plugins')();
+
+//https://github.com/gulpjs/gulp/blob/master/docs/recipes/rollup-with-rollup-stream.md
+//https://webpack.js.org/guides/integrations/#gulp
+gulp.task('js_for', function () {
+    return gulp
+        .src(SRC.JS.FOR)
+        .pipe(webpack({
+            entry: SRC.JS.FOR_ENTRY,
+            output: {
+                filename: '[name].js',
+            },
+        }))
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        // .pipe(uglify())
+        .pipe(gulp.dest(DEV.JS.FOR));
+});
 
 
 
@@ -172,9 +186,9 @@ gulp.task('scss_header', function () {
 
     return gulp.src(SRC.SCSS.HEADER)
         .pipe(scss())
-        .pipe(cleanCss({ 
+        .pipe(cleanCss({
             compatibility: 'ie11',
-            level: { 1: { specialComments: 0 } },/* format: 'beautify' */ 
+            level: { 1: { specialComments: 0 } },/* format: 'beautify' */
         })) // Минификация css
         .pipe(concat('header.css'))
         .pipe(rename({ suffix: '.min' }))
@@ -198,9 +212,9 @@ gulp.task('scss_footer', function () {
 
     return gulp.src(SRC.SCSS.FOOTER, { allowEmpty: true })
         .pipe(scss())
-        .pipe(cleanCss({ 
+        .pipe(cleanCss({
             compatibility: 'ie11',
-            level: { 1: { specialComments: 0 } },/* format: 'beautify' */ 
+            level: { 1: { specialComments: 0 } },/* format: 'beautify' */
         })) // Минификация css 
         .pipe(concat('footer.css'))
         .pipe(rename({ suffix: '.min' }))
@@ -224,9 +238,9 @@ gulp.task('scss_for', function () {
 
     return gulp.src(SRC.SCSS.FOR, { allowEmpty: true })
         .pipe(scss())
-        .pipe(cleanCss({ 
+        .pipe(cleanCss({
             compatibility: 'ie11',
-            level: { 1: { specialComments: 0 } },/* format: 'beautify' */ 
+            level: { 1: { specialComments: 0 } },/* format: 'beautify' */
         })) // Минификация css 
         // .pipe(concat('example.css'))
         .pipe(rename({ suffix: '.min' }))
@@ -335,21 +349,6 @@ gulp.task('js_footer', function () {
 
 
 
-gulp.task('js_for', function () {
-    //сначала очистка
-    gulp.src(DEV.JS.FOR + '*.js', { read: false, allowEmpty: true })
-        .pipe(clean());
-
-    return gulp.src(SRC.JS.FOR)
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
-        .pipe(gulp.dest(DEV.JS.FOR));
-});
-
-
 
 //очистка старых изображений
 // gulp.task('clean_img', function () {
@@ -390,7 +389,7 @@ gulp.task('run_dev_server', function (done) {
     browserSync.init({ // browser sync
         server: DEV_ROOT
     });
-    gulp.watch(SRC.HTML, gulp.series((CONFIG.HTML_MIN)?'minhtml':'html'));
+    gulp.watch(SRC.HTML, gulp.series((CONFIG.HTML_MIN) ? 'minhtml' : 'html'));
     // gulp.watch(SRC.PUG, gulp.series('pug'));
     gulp.watch(SRC.SCSS.HEADER, gulp.series('scss_header'));
     gulp.watch(SRC.SCSS.FOOTER, gulp.series('scss_footer'));
@@ -409,12 +408,12 @@ gulp.task('run_dev_server', function (done) {
 
 
 gulp.task('plug', function () {
-    return gulp.src('.', {allowEmpty: true});
+    return gulp.src('.', { allowEmpty: true });
 });
 
 
 
-gulp.task( 'default', gulp.series( ((CONFIG.CLEAN_DEV)?'clean_dev':'plug'), ((CONFIG.PUG)?'pug':'plug'), ((CONFIG.HTML_MIN)?'minhtml':'html'), ((CONFIG.MOVE_FILES)?'move_files':'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', 'js_for', 'imagemin', 'ewebp', 'run_dev_server' ) );
+gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', 'js_for', 'imagemin', 'ewebp', 'run_dev_server'));
 
 
 
