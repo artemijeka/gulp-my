@@ -124,10 +124,77 @@ gulp.task('js_for', function () {
         .pipe(webpack({
             entry: SRC.JS.FOR_ENTRY,
             output: {
-                filename: '[name].min.js',
+                filename: '[name].js',
             },
-        }))
+        }))        
+        // .pipe(babel({
+        //     presets: ['@babel/env']
+        // }))
+        // .pipe(uglify())
+        .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(DEV.JS.FOR));
+});
+
+
+
+gulp.task('js_libs_header', function () {
+    //сначала очистка
+    gulp.src(DEV.JS.LIBS + 'header.min.js', { read: false, allowEmpty: true })
+        .pipe(clean());
+
+    return gulp.src(SRC.JS.LIBS.HEADER, { allowEmpty: true })
+        .pipe(concat('header.js'))
+        .pipe(rename({ suffix: '.min' }))
+        // .pipe(uglify())
+        .pipe(gulp.dest(DEV.JS.LIBS));
+});
+
+
+
+gulp.task('js_libs_footer', function () {
+    //сначала очистка
+    gulp.src(DEV.JS.LIBS + 'footer.min.js', { read: false, allowEmpty: true })
+        .pipe(clean());
+
+    return gulp.src(SRC.JS.LIBS.FOOTER, { allowEmpty: true })
+        .pipe(concat('footer.js'))
+        .pipe(rename({ suffix: '.min' }))
+        // .pipe(uglify({}))
+        .pipe(gulp.dest(DEV.JS.LIBS));
+});
+
+
+
+gulp.task('js_header', function () {
+    //сначала очистка
+    gulp.src(DEV.JS.ROOT + 'header.js', { read: false, allowEmpty: true })
+        .pipe(clean());
+
+    return gulp.src(SRC.JS.HEADER)
+        .pipe(concat('header.js'))
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify())
+        .pipe(gulp.dest(DEV.JS.ROOT));
+});
+
+
+
+gulp.task('js_footer', function () {
+    //сначала очистка
+    gulp.src(DEV.JS.ROOT + 'footer.min.js', { read: false, allowEmpty: true })
+        .pipe(clean());
+
+    return gulp.src(SRC.JS.FOOTER)
+        .pipe(concat('footer.js'))
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify())
+        .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
 
@@ -282,68 +349,6 @@ gulp.task('scss_libs_footer', function () {
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(DEV.CSS.LIBS))
         .pipe(browserSync.stream());
-});
-
-
-
-gulp.task('js_libs_header', function () {
-    //сначала очистка
-    gulp.src(DEV.JS.LIBS + 'header.min.js', { read: false, allowEmpty: true })
-        .pipe(clean());
-
-    return gulp.src(SRC.JS.LIBS.HEADER, { allowEmpty: true })
-        .pipe(concat('header.js'))
-        .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
-        .pipe(gulp.dest(DEV.JS.LIBS));
-});
-
-
-
-gulp.task('js_libs_footer', function () {
-    //сначала очистка
-    gulp.src(DEV.JS.LIBS + 'footer.min.js', { read: false, allowEmpty: true })
-        .pipe(clean());
-
-    return gulp.src(SRC.JS.LIBS.FOOTER, { allowEmpty: true })
-        .pipe(concat('footer.js'))
-        .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify({}))
-        .pipe(gulp.dest(DEV.JS.LIBS));
-});
-
-
-
-gulp.task('js_header', function () {
-    //сначала очистка
-    gulp.src(DEV.JS.ROOT + 'header.js', { read: false, allowEmpty: true })
-        .pipe(clean());
-
-    return gulp.src(SRC.JS.HEADER)
-        .pipe(concat('header.js'))
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
-        .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
-        .pipe(gulp.dest(DEV.JS.ROOT));
-});
-
-
-
-gulp.task('js_footer', function () {
-    //сначала очистка
-    gulp.src(DEV.JS.ROOT + 'footer.min.js', { read: false, allowEmpty: true })
-        .pipe(clean());
-
-    return gulp.src(SRC.JS.FOOTER)
-        .pipe(concat('footer.js'))
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
-        .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
-        .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
 
