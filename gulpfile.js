@@ -66,7 +66,7 @@ const SRC = {
         FOOTER: './src/js/footer/*.js',
         FOR: './src/js/for/**/*.js',
         FOR_ENTRY: {
-            'lk': './src/js/for/lk/lk-app.js',// ./dev.loc/js/for/lk.js
+            'test': './src/js/for/test/test.js',// ./dev.loc/js/for/lk.js
         },
         LIBS: {
             HEADER: './src/js/libs/header/*.js',
