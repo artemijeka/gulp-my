@@ -1,30 +1,36 @@
 'use strict';
 
-const gulp = require('gulp'),
-    browserSync = require('browser-sync'),
-    htmlmin = require('gulp-htmlmin'),
-    clean = require('gulp-clean'),
-    scss = require('gulp-dart-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    cleanCss = require('gulp-clean-css'),
-    rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
-    babel = require('gulp-babel'),
-    imagemin = require('gulp-imagemin'),
-    pngquant = require('imagemin-pngquant'),
-    mozjpeg = require('imagemin-mozjpeg'),
-    webp = require('imagemin-webp'),
-    extReplace = require("gulp-ext-replace"),
-    webpack = require('webpack-stream'),
-    uglify = require('gulp-uglify-es').default;
-//https://www.npmjs.com/package/gulp-responsive
+
+
+const   gulp = require('gulp'),
+        browserSync = require('browser-sync'),
+        htmlmin = require('gulp-htmlmin'),
+        clean = require('gulp-clean'),
+        scss = require('gulp-dart-sass'),
+        autoprefixer = require('gulp-autoprefixer'),
+        cleanCss = require('gulp-clean-css'),
+        rename = require('gulp-rename'),
+        concat = require('gulp-concat'),
+        babel = require('gulp-babel'),
+        imagemin = require('gulp-imagemin'),
+        pngquant = require('imagemin-pngquant'),
+        mozjpeg = require('imagemin-mozjpeg'),
+        webp = require('imagemin-webp'),
+        extReplace = require("gulp-ext-replace"),
+        uglify = require('gulp-uglify-es').default,
+        webpack = require('webpack-stream'),
+            source = require('vinyl-source-stream'),//fo webpack-stream
+            rollup = require('rollup-stream'),//fo webpack-stream
+            buffer = require('vinyl-buffer');//fo webpack-stream
+
+
 
 const CONFIG = {
     'MOVE_FILES': true,
     'CLEAN_DEV': true,
     'HTML_MIN': false,
     'PUG': false,
-    'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],
+    'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
 };
 
 const SRC = {
@@ -60,8 +66,7 @@ const SRC = {
         FOOTER: './src/js/footer/*.js',
         FOR: './src/js/for/**/*.js',
         FOR_ENTRY: {
-            'lk': './src/js/for/lk/lk-app.js',
-            'test': './src/js/for/test/test.js'
+            'lk': './src/js/for/lk/lk-app.js',// ./dev.loc/js/for/lk.js
         },
         LIBS: {
             HEADER: './src/js/libs/header/*.js',
@@ -109,7 +114,7 @@ const DIST = {
 
 
 
-//https://github.com/gulpjs/gulp/blob/master/docs/recipes/rollup-with-rollup-stream.md
+// https://github.com/gulpjs/gulp/blob/master/docs/recipes/rollup-with-rollup-stream.md
 //https://webpack.js.org/guides/integrations/#gulp
 gulp.task('js_for', function () {
     return gulp
@@ -120,10 +125,6 @@ gulp.task('js_for', function () {
                 filename: '[name].js',
             },
         }))
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
-        // .pipe(uglify())
         .pipe(gulp.dest(DEV.JS.FOR));
 });
 
@@ -322,7 +323,7 @@ gulp.task('js_header', function () {
             presets: ['@babel/env']
         }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
@@ -339,7 +340,7 @@ gulp.task('js_footer', function () {
             presets: ['@babel/env']
         }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
