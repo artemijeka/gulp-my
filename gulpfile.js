@@ -34,6 +34,18 @@ const CONFIG = {
 };
 
 const SRC = {
+    JS: {
+        FOR: './src/js/for/**/*.js',
+        FOR_ENTRY: {
+            'plug': './src/js/for/plug/plug.js',// ./dev.loc/js/for/lk.js
+        },
+        HEADER: './src/js/header/*.js',
+        FOOTER: './src/js/footer/*.js',
+        LIBS: {
+            HEADER: './src/js/libs/header/*.js',
+            FOOTER: './src/js/libs/footer/*.js',
+        },
+    },
     FILES: [
         './src/*.*',
         './src/**/*.+(eot|svg|ttf|woff|woff2|mp4)',
@@ -49,7 +61,7 @@ const SRC = {
     HTML: [
         './src/**/*.html'
     ],
-    FONT: ['./src/font/*'],
+    FONTS: ['./src/fonts/*'],
     IMAGES_ALL: './src/img/**/*.+(ico|svg|png|jpg|gif|webp)',
     IMAGES_JPG_PNG: './src/img/**/*.+(png|jpg|jpeg|webp)',
     SCSS: {
@@ -61,25 +73,13 @@ const SRC = {
         FOOTER: ['./src/scss/footer/**/*.scss'],
         FOR: './src/scss/for/**/*.scss',
     },
-    JS: {
-        HEADER: './src/js/header/*.js',
-        FOOTER: './src/js/footer/*.js',
-        FOR: './src/js/for/**/*.js',
-        FOR_ENTRY: {
-            'test': './src/js/for/test/test.js',// ./dev.loc/js/for/lk.js
-        },
-        LIBS: {
-            HEADER: './src/js/libs/header/*.js',
-            FOOTER: './src/js/libs/footer/*.js',
-        },
-    },
 };
 
 const DEV_ROOT = './dev.loc/'
 const DEV = {
     FILES: [
         DEV_ROOT + '*.*',
-        DEV_ROOT + 'font/**/*',
+        DEV_ROOT + 'fonts/**/*',
         DEV_ROOT + '**/img/**/*.*',
         DEV_ROOT + '**/.htaccess',
         DEV_ROOT + '**/*.html',
@@ -102,7 +102,7 @@ const DEV = {
         FOR: DEV_ROOT + 'js/for/',
     },
     IMAGES: DEV_ROOT + 'img/',
-    FONT: [DEV_ROOT + 'font/'],
+    FONTS: [DEV_ROOT + 'fonts/'],
 };
 
 /* PRODACTION TO DIST */
