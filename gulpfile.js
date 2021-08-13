@@ -30,6 +30,7 @@ const CONFIG = {
     'CLEAN_DEV': true,
     'HTML_MIN': false,
     'PUG': false,
+    'JS_FOR': false,
     'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
 };
 
@@ -403,7 +404,8 @@ gulp.task('run_dev_server', function (done) {
     gulp.watch(SRC.JS.LIBS.FOOTER, gulp.series('js_libs_footer'));
     gulp.watch(SRC.JS.HEADER, gulp.series('js_header'));
     gulp.watch(SRC.JS.FOOTER, gulp.series('js_footer'));
-    gulp.watch(SRC.JS.FOR, gulp.series('js_for'));
+    // gulp.watch(SRC.JS.FOR, gulp.series('js_for'));
+    gulp.watch(SRC.HTML, gulp.series((CONFIG.JS_FOR) ? 'js_for' : 'plug'));
     gulp.watch(SRC.SCSS.FOR, gulp.series('scss_for'));
     if (CONFIG.MOVE_FILES) { gulp.watch(SRC.FILES, gulp.series('move_files')); }
     done();
@@ -417,7 +419,7 @@ gulp.task('plug', function () {
 
 
 
-gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', 'js_for', 'imagemin', 'ewebp', 'run_dev_server'));
+gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR)?'js_for':'plug'), 'imagemin', 'ewebp', 'run_dev_server'));
 
 
 
