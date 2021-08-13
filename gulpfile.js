@@ -37,7 +37,7 @@ const SRC = {
     JS: {
         FOR: './src/js/for/**/*.js',
         FOR_ENTRY: {
-            'plug': './src/js/for/plug/plug.js',// ./dev.loc/js/for/lk.js
+            'test': './src/js/for/test/test.js',// ./dev.loc/js/for/lk.js
         },
         HEADER: './src/js/header/*.js',
         FOOTER: './src/js/footer/*.js',
