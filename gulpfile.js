@@ -131,7 +131,7 @@ gulp.task('js_for', function () {
         // .pipe(babel({
         //     presets: ['@babel/env']
         // }))
-        // .pipe(uglify())
+        // .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(DEV.JS.FOR));
 });
@@ -146,7 +146,7 @@ gulp.task('js_libs_header', function () {
     return gulp.src(SRC.JS.LIBS.HEADER, { allowEmpty: true })
         .pipe(concat('header.js'))
         .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
+        // .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DEV.JS.LIBS));
 });
 
@@ -177,7 +177,7 @@ gulp.task('js_header', function () {
             presets: ['@babel/env']
         }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
@@ -194,7 +194,7 @@ gulp.task('js_footer', function () {
             presets: ['@babel/env']
         }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
@@ -466,7 +466,7 @@ gulp.task('js_header_concat', function () {
     return gulp.src(DEV.JS.HEADER, { allowEmpty: true })
         .pipe(concat('header.js'))
         .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
+        // .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DIST.JS));
 });
 
@@ -476,7 +476,7 @@ gulp.task('js_footer_concat', function () {
     return gulp.src(DEV.JS.FOOTER, { allowEmpty: true })
         .pipe(concat('footer.js'))
         .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify())
+        // .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DIST.JS));
 });
 
