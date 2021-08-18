@@ -17,6 +17,7 @@ const   gulp = require('gulp'),
         mozjpeg = require('imagemin-mozjpeg'),
         webp = require('imagemin-webp'),
         extReplace = require("gulp-ext-replace"),
+        // https://www.npmjs.com/package/terser#api-reference
         uglify = require('gulp-uglify-es').default,
         webpack = require('webpack-stream'),
             source = require('vinyl-source-stream'),//fo webpack-stream
