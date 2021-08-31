@@ -1,5 +1,6 @@
-'use strict';
-
+/**
+ * @version 1.1 26.08.2021
+ */
 
 
 const   gulp = require('gulp'),
