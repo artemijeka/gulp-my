@@ -1,9 +1,6 @@
 # install gulp guide
-### v2.0.0 15.07.2021
+### v2.1 04.09.2021
 ### work.artem.kuznecov.samara@yandex.ru
-
-
-
 ### https://github.com/nodesource/distributions/blob/master/README.md
 
 
@@ -25,6 +22,16 @@
       sudo npm i gulp -g 
       gulp
     ```
+
+
+
+### npm-check-updates
+  ```
+  //check:
+  ncu
+  //update:
+  ncu -u
+  ```
 
 
 
