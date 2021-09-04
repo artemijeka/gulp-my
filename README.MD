@@ -64,7 +64,7 @@
 
 
 ### Ошибки:
-  **Если ```gulp``` не запускается, то:**  
+  **Если `gulp` не запускается, то:**  
     *Удалить:*
       ```
         node_modules
@@ -74,18 +74,33 @@
         npm i
       ```
 
-  **Если ```npm i``` не устанавливается, то:**
+  **Если `npm i` не устанавливается, то:**
     ```
-      # Update nodejs to latest version:
-      sudo npm install -g n
-      sudo n latest
-      # Update npm to latest version:
-      sudo npm install -g npm
-      # Try npm install
-      npm i
+    //Update nodejs to latest version:  
+    sudo npm install -g n  
+    sudo n latest  
+    //Update npm to latest version:  
+    sudo npm install -g npm  
+    //Try npm install  
+    npm i  
+    ```
+    //or:
+    ```
+    //Ubuntu Server 18.04 Node.js and npm install
+    sudo apt remove --purge nodejs npm
+    sudo apt clean
+    sudo apt autoclean
+    sudo apt install -f
+    sudo apt autoremove
+
+    //Find the latest version at https://github.com/nodesource/distributions#debinstall
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    sudo apt-get update && sudo apt-get install yarn
     ```
 
-  **Ошибка: ```node-sass```** 
+  **Ошибка: `node-sass`** 
     ```
       gulp
       Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (88)

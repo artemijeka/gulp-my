@@ -1,29 +1,27 @@
 /**
  * @version 1.1 26.08.2021
  */
-
-
-const   gulp = require('gulp'),
-        browserSync = require('browser-sync'),
-        htmlmin = require('gulp-htmlmin'),
-        clean = require('gulp-clean'),
-        scss = require('gulp-dart-sass'),
-        autoprefixer = require('gulp-autoprefixer'),
-        cleanCss = require('gulp-clean-css'),
-        rename = require('gulp-rename'),
-        concat = require('gulp-concat'),
-        babel = require('gulp-babel'),
-        imagemin = require('gulp-imagemin'),
-        pngquant = require('imagemin-pngquant'),
-        mozjpeg = require('imagemin-mozjpeg'),
-        webp = require('imagemin-webp'),
-        extReplace = require("gulp-ext-replace"),
-        // https://www.npmjs.com/package/terser#api-reference
-        uglify = require('gulp-uglify-es').default,
-        webpack = require('webpack-stream'),
-            source = require('vinyl-source-stream'),//fo webpack-stream
-            rollup = require('rollup-stream'),//fo webpack-stream
-            buffer = require('vinyl-buffer');//fo webpack-stream
+const gulp = require('gulp'),
+    browserSync = require('browser-sync'),
+    htmlmin = require('gulp-htmlmin'),
+    clean = require('gulp-clean'),
+    scss = require('gulp-dart-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
+    cleanCss = require('gulp-clean-css'),
+    rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
+    babel = require('gulp-babel'),
+    imagemin = require('gulp-image'),//gulp-imagemin//устарел похоже
+    pngquant = require('imagemin-pngquant'),
+    mozjpeg = require('imagemin-mozjpeg'),
+    webp = require('imagemin-webp'),
+    extReplace = require("gulp-ext-replace"),
+    // https://www.npmjs.com/package/terser#api-reference
+    uglify = require('gulp-uglify-es').default,
+    webpack = require('webpack-stream'),
+    source = require('vinyl-source-stream'),//fo webpack-stream
+    rollup = require('rollup-stream'),//fo webpack-stream
+    buffer = require('vinyl-buffer');//fo webpack-stream
 
 
 
@@ -129,7 +127,7 @@ gulp.task('js_for', function () {
             output: {
                 filename: '[name].js',
             },
-        }))        
+        }))
         // .pipe(babel({
         //     presets: ['@babel/env']
         // }))
@@ -421,7 +419,7 @@ gulp.task('plug', function () {
 
 
 
-gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR)?'js_for':'plug'), 'imagemin', 'ewebp', 'run_dev_server'));
+gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR) ? 'js_for' : 'plug'), 'imagemin', 'ewebp', 'run_dev_server'));
 
 
 
