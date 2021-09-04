@@ -12,7 +12,7 @@
   "author-email": "work.artem.kuznecov.samara@yandex.ru",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.15.4",
+    "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
