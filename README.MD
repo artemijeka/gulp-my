@@ -24,17 +24,6 @@
     ```
 
 
-
-### npm-check-updates
-  ```
-  //check:
-  ncu
-  //update:
-  ncu -u
-  ```
-
-
-
 ### (windows):  
   **install nodejs and npm:**   
     [https://nodejs.org/en/download/](https://nodejs.org/en/download/)  
@@ -129,3 +118,12 @@
         scss = require('gulp-dart-sass')
       ```
 
+
+
+### npm-check-updates
+  ```
+  //check:
+  ncu
+  //update:
+  ncu -u
+  ```
