@@ -1,7 +1,7 @@
 {
   "name": "my-gulp-start",
-  "version": "1.1.0",
-  "version-date": "02.08.2021",
+  "version": "1.1.1",
+  "version-date": "22.02.2022",
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "author": "Artem Kuznecov",
   "author-site": "web.master-artem.ru",
-  "author-email": "work.artem.kuznecov.samara@yandex.ru",
+  "author-email": "artem.kuznecov.samara@yandex.ru",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.5",
