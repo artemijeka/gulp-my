@@ -1,6 +1,6 @@
 # install gulp guide
-### v2.1 04.09.2021
-### work.artem.kuznecov.samara@yandex.ru
+### v2.2 28.03.2022
+### artem.kuznecov.samara@yandex.ru
 ### https://github.com/nodesource/distributions/blob/master/README.md
 
 
@@ -9,7 +9,7 @@
   **install nodejs and npm:**   
     ```
       sudo apt install curl  
-      curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -  
+      curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -   
       sudo apt install -y nodejs  
       sudo apt install -y npm  
       node --version
@@ -90,7 +90,7 @@
     sudo apt autoremove
 
     //Find the latest version at https://github.com/nodesource/distributions#debinstall
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
     sudo apt-get install -y nodejs
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     sudo apt-get update && sudo apt-get install yarn
