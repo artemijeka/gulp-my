@@ -1,4 +1,3 @@
-# php_value mbstring.internal_encoding UTF-8
 AddDefaultCharset UTF-8
 DefaultLanguage ru-RU
 
@@ -9,6 +8,8 @@ DefaultLanguage ru-RU
 
 
 ###################################################################################################################
+# php_value mbstring.internal_encoding UTF-8
+
 ### ?
 AddType image/webp .webp
 
