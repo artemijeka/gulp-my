@@ -1,8 +1,14 @@
-AddDefaultCharset UTF-8
 # php_value mbstring.internal_encoding UTF-8
-
+AddDefaultCharset UTF-8
 DefaultLanguage ru-RU
 
+<ifModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript application/font-woff2 image/svg+xml
+</ifModule>
+
+
+
+###################################################################################################################
 ### ?
 AddType image/webp .webp
 
@@ -100,6 +106,3 @@ RewriteRule .* - [F]
 
 
 
-<ifModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript application/font-woff2 image/svg+xml
-</ifModule>
