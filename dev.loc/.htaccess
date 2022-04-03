@@ -1,16 +1,84 @@
-AddDefaultCharset UTF-8
-DefaultLanguage ru-RU
-
 <ifModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript application/font-woff2 image/svg+xml
 </ifModule>
 
 
 
+# BEGIN Expire headers
+<ifModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 5 seconds"
+    ExpiresByType image/x-icon "access plus 2592000 seconds"
+    ExpiresByType image/jpeg "access plus 2592000 seconds"
+    ExpiresByType image/png "access plus 2592000 seconds"
+    ExpiresByType image/gif "access plus 2592000 seconds"
+    ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+    ExpiresByType text/css "access plus 604800 seconds"
+    ExpiresByType text/javascript "access plus 216000 seconds"
+    ExpiresByType application/javascript "access plus 216000 seconds"
+    ExpiresByType application/x-javascript "access plus 216000 seconds"
+    ExpiresByType text/html "access plus 600 seconds"
+    ExpiresByType application/xhtml+xml "access plus 600 seconds"
+</ifModule>
+# END Expire headers
+
+
+
+# BEGIN Cache-Control Headers
+<ifModule mod_headers.c>
+    <filesMatch "\.(ico|jpe?g|png|gif|swf)$">
+        Header set Cache-Control "public"
+    </filesMatch>
+    <filesMatch "\.(css)$">
+        Header set Cache-Control "public"
+    </filesMatch>
+    <filesMatch "\.(js)$">
+        Header set Cache-Control "private"
+    </filesMatch>
+    <filesMatch "\.(x?html?|php)$">
+        Header set Cache-Control "private, must-revalidate"
+    </filesMatch>
+</ifModule>
+# END Cache-Control Headers
+
+
+
+# Отключение заголовка ETag
+# Механизм ETag (Entity Tag) предназначен для обнаружения новых версий запрошенных файлов. 
+# Когда сервер отсылает клиенту файл, он добавляет заголовок ETag, в который записывает хеш отправляемого файла. 
+# Клиент же, при повторном запросе, добавляет заголовок If-None-Match, значение которого равно хешу файла в кеше. 
+# Если значение совпадают, то сервер возвращает ответ HTTP/1.1 304 Not Modified, а если не совпадают, тогда возвращает новую версию файла. 
+# Таким образом, удаление заголовка ETag в ответах сервера отключает этот механизм. 
+# Что заставляет кеш клиента использовать только значения Expires и Cache-Control (если вы не используете Expires и Cache-Control не удаляйте ETag!). 
+# Выигрыш такого подхода в том, что между клиентом и сервером отпадает надобность обмениваться запросами проверки новых версий (If-None-Match и 304 Not Modified).
+# Отключение заголовка делается следующим образом:
+Header unset ETag
+FileETag None
+
+
+
+# Удаление заголовка Last-Modified вместе с заголовком 
+# ETag позволит полностью избежать использования запросов проверки новых версий файлов If-Modified-Since и If-None-Match. 
+# Таким образом файлы будут кешироваться только на основании значений Cache-Control и Expires. 
+# Примечание: Не удаляйте Last-Modified и ETag для .html файлов. 
+# Делается это следующим образом:
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css)$">
+Header unset Last-Modified
+</FilesMatch>
+
+
+
 ###################################################################################################################
 # php_value mbstring.internal_encoding UTF-8
 
-### ?
+
+
+# AddDefaultCharset UTF-8
+# DefaultLanguage ru-RU
+
+
+
+# ?
 AddType image/webp .webp
 
 Options -Indexes
