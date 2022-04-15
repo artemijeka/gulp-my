@@ -6,7 +6,7 @@
 
  const CONFIG = {
     'IMAGES_COMPRESS_ON_DEV': true,
-    'IMAGES_CONVERT_TO_WEBP': false,
+    'IMAGES_CONVERT_TO_WEBP': true,
     'MOVE_FILES': true,
     'CLEAN_DEV': false,
     'HTML_MIN': false,
@@ -415,12 +415,12 @@ gulp.task('imagemin', function () {
 
 
 // export to webp
-gulp.task("IMAGES_CONVERT_TO_WEBP", function () {
+gulp.task("images_convert_to_webp", function () {
     return gulp.src(SRC.IMAGES_JPG_PNG)
         .pipe(
             imagemin([
                 webp({
-                    quality: 90
+                    quality: 91
                 })
             ]))
         .pipe(extReplace(".webp"))
@@ -460,7 +460,7 @@ gulp.task('plug', function () {
 
 
 
-gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR) ? 'js_for' : 'plug'), ((CONFIG.IMAGES_COMPRESS_ON_DEV) ? 'imagemin' : 'plug'), ((CONFIG.IMAGES_CONVERT_TO_WEBP) ? 'IMAGES_CONVERT_TO_WEBP' : 'plug'), 'run_dev_server'));
+gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR) ? 'js_for' : 'plug'), ((CONFIG.IMAGES_COMPRESS_ON_DEV) ? 'imagemin' : 'plug'), ((CONFIG.IMAGES_CONVERT_TO_WEBP) ? 'images_convert_to_webp' : 'plug'), 'run_dev_server'));
 
 
 
