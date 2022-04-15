@@ -1,6 +1,26 @@
 /**
- * @version 1.1 26.08.2021
- */
+ * @version 1.2 5.03.2022 
+ **/
+
+
+
+ const CONFIG = {
+    'IMAGES_COMPRESS_ON_DEV': true,
+    'IMAGES_CONVERT_TO_WEBP': false,
+    'MOVE_FILES': true,
+    'CLEAN_DEV': false,
+    'HTML_MIN': false,
+    'PUG': false,
+    'JS_FOR': false,
+    'AUTOPREFIXER': ['> 0.25%', 'last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'ie 11', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
+    'JS': {
+        'MODE': 'production',//'production' || 'development'
+        'MIN': false,
+    }
+};
+
+
+
 const gulp = require('gulp'),
     browserSync = require('browser-sync'),
     htmlmin = require('gulp-htmlmin'),
@@ -15,24 +35,17 @@ const gulp = require('gulp'),
     pngquant = require('imagemin-pngquant'),
     mozjpeg = require('imagemin-mozjpeg'),
     webp = require('imagemin-webp'),
+    newer = require('gulp-newer'),
     extReplace = require("gulp-ext-replace"),
     // https://www.npmjs.com/package/terser#api-reference
     uglify = require('gulp-uglify-es').default,
     webpack = require('webpack-stream'),
+    gulpif = require('gulp-if'),
     source = require('vinyl-source-stream'),//fo webpack-stream
     rollup = require('rollup-stream'),//fo webpack-stream
     buffer = require('vinyl-buffer');//fo webpack-stream
 
 
-
-const CONFIG = {
-    'MOVE_FILES': true,
-    'CLEAN_DEV': true,
-    'HTML_MIN': false,
-    'PUG': false,
-    'JS_FOR': false,
-    'AUTOPREFIXER': ['last 10 version', 'safari 5', 'ie 8', 'ie 9', 'ie 10', 'opera 12.1', 'ios 6', 'android 4'],//['last 10 versions']
-};
 
 const SRC = {
     JS: {
@@ -63,25 +76,27 @@ const SRC = {
         './src/**/*.html'
     ],
     FONTS: ['./src/fonts/*'],
-    IMAGES_ALL: './src/img/**/*.+(ico|svg|png|jpg|gif|webp)',
-    IMAGES_JPG_PNG: './src/img/**/*.+(png|jpg|jpeg|webp)',
+    IMAGES_ALL: './src/images/**/*.+(ico|svg|png|jpg|gif|webp)',
+    IMAGES_JPG_PNG: './src/images/**/*.+(png|jpg|jpeg|webp)',
     SCSS: {
         HEADER: ['./src/scss/header/**/*.scss'],
         LIBS: {
-            HEADER: ['./src/scss/libs/header/**/*.scss'],
-            FOOTER: ['./src/scss/libs/footer/**/*.scss'],
+            HEADER: ['./src/css/libs/header/**/*.scss'],
+            FOOTER: ['./src/css/libs/footer/**/*.scss'],
         },
         FOOTER: ['./src/scss/footer/**/*.scss'],
         FOR: './src/scss/for/**/*.scss',
     },
 };
 
+
+
 const DEV_ROOT = './dev.loc/'
 const DEV = {
     FILES: [
         DEV_ROOT + '*.*',
         DEV_ROOT + 'fonts/**/*',
-        DEV_ROOT + '**/img/**/*.*',
+        DEV_ROOT + '**/images/**/*.*',
         DEV_ROOT + '**/.htaccess',
         DEV_ROOT + '**/*.html',
         // './src/**/*.php',
@@ -102,7 +117,7 @@ const DEV = {
         FOOTER: [DEV_ROOT + 'js/libs/footer.min.js', DEV_ROOT + 'js/footer.min.js'],
         FOR: DEV_ROOT + 'js/for/',
     },
-    IMAGES: DEV_ROOT + 'img/',
+    IMAGES: DEV_ROOT + 'images/',
     FONTS: [DEV_ROOT + 'fonts/'],
 };
 
@@ -127,11 +142,15 @@ gulp.task('js_for', function () {
             output: {
                 filename: '[name].js',
             },
+            // optimization: {
+            //     minimize: CONFIG.JS.MIN,
+            // },
+            mode: CONFIG.JS.MODE,//production//development
         }))
-        // .pipe(babel({
-        //     presets: ['@babel/env']
-        // }))
-        // .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(gulpif(CONFIG.JS.MIN, uglify({ keep_fnames: true, compress: false, keep_classnames: true })))//{ toplevel: false }
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(DEV.JS.FOR));
 });
@@ -160,7 +179,7 @@ gulp.task('js_libs_footer', function () {
     return gulp.src(SRC.JS.LIBS.FOOTER, { allowEmpty: true })
         .pipe(concat('footer.js'))
         .pipe(rename({ suffix: '.min' }))
-        // .pipe(uglify({}))
+        // .pipe(uglify({}))//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
         .pipe(gulp.dest(DEV.JS.LIBS));
 });
 
@@ -172,12 +191,22 @@ gulp.task('js_header', function () {
         .pipe(clean());
 
     return gulp.src(SRC.JS.HEADER)
-        .pipe(concat('header.js'))
+        .pipe(webpack({            
+            // entry: SRC.JS.HEADER_ENTRY,
+            // output: {
+            //     filename: '[name].js',
+            // },
+            optimization: {
+                minimize: false,
+            },
+            mode: CONFIG.JS.MODE,//production//development
+        }))
         .pipe(babel({
             presets: ['@babel/env']
         }))
+        .pipe(concat('header.js'))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
+        .pipe(gulpif(CONFIG.JS.MIN, uglify({ keep_fnames: true, compress: false, keep_classnames: true })))//{ toplevel: false }
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
@@ -189,12 +218,22 @@ gulp.task('js_footer', function () {
         .pipe(clean());
 
     return gulp.src(SRC.JS.FOOTER)
-        .pipe(concat('footer.js'))
+        .pipe(webpack({            
+            // entry: SRC.JS.FOOTER_ENTRY,
+            // output: {
+            //     filename: '[name].js',
+            // },
+            optimization: {
+                minimize: false,
+            },
+            mode: CONFIG.JS.MODE,//production//development
+        }))
         .pipe(babel({
             presets: ['@babel/env']
         }))
+        .pipe(concat('footer.js'))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())//{ toplevel: false, keep_fnames: true, compress: false, keep_classnames: true }
+        .pipe(gulpif(CONFIG.JS.MIN, uglify({ keep_fnames: true, compress: false, keep_classnames: true })))//{ toplevel: false }
         .pipe(gulp.dest(DEV.JS.ROOT));
 });
 
@@ -356,7 +395,7 @@ gulp.task('scss_libs_footer', function () {
 
 
 //очистка старых изображений
-// gulp.task('clean_img', function () {
+// gulp.task('clean_images', function () {
 //     return gulp.src(DEV.IMAGES, { read: false, allowEmpty: true })
 //         .pipe(clean());
 // });
@@ -365,9 +404,10 @@ gulp.task('scss_libs_footer', function () {
 
 gulp.task('imagemin', function () {
     return gulp.src(SRC.IMAGES_ALL)
+        .pipe(newer(DEV.IMAGES))
         .pipe(imagemin([
-            pngquant({ quality: [0.89, 0.91] }),
-            mozjpeg({ quality: 90 })
+            pngquant({ quality: [0.90, 0.92] }),
+            mozjpeg({ quality: 91, progressive: true })
         ]))
         .pipe(gulp.dest(DEV.IMAGES))
 });
@@ -375,7 +415,7 @@ gulp.task('imagemin', function () {
 
 
 // export to webp
-gulp.task("ewebp", function () {
+gulp.task("IMAGES_CONVERT_TO_WEBP", function () {
     return gulp.src(SRC.IMAGES_JPG_PNG)
         .pipe(
             imagemin([
@@ -397,6 +437,7 @@ gulp.task('run_dev_server', function (done) {
     gulp.watch(SRC.HTML, gulp.series((CONFIG.HTML_MIN) ? 'minhtml' : 'html'));
     // gulp.watch(SRC.PUG, gulp.series('pug'));
     gulp.watch(SRC.SCSS.HEADER, gulp.series('scss_header'));
+    // gulp.watch(SRC.IMAGES_ALL, gulp.series('imagemin'));
     gulp.watch(SRC.SCSS.FOOTER, gulp.series('scss_footer'));
     gulp.watch(SRC.SCSS.LIBS.HEADER, gulp.series('scss_libs_header'));
     gulp.watch(SRC.SCSS.LIBS.FOOTER, gulp.series('scss_libs_footer'));
@@ -419,13 +460,13 @@ gulp.task('plug', function () {
 
 
 
-gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR) ? 'js_for' : 'plug'), 'imagemin', 'ewebp', 'run_dev_server'));
+gulp.task('default', gulp.series(((CONFIG.CLEAN_DEV) ? 'clean_dev' : 'plug'), ((CONFIG.PUG) ? 'pug' : 'plug'), ((CONFIG.HTML_MIN) ? 'minhtml' : 'html'), ((CONFIG.MOVE_FILES) ? 'move_files' : 'plug'), 'scss_libs_header', 'scss_libs_footer', 'scss_header', 'scss_footer', 'scss_for', 'js_libs_header', 'js_libs_footer', 'js_header', 'js_footer', ((CONFIG.JS_FOR) ? 'js_for' : 'plug'), ((CONFIG.IMAGES_COMPRESS_ON_DEV) ? 'imagemin' : 'plug'), ((CONFIG.IMAGES_CONVERT_TO_WEBP) ? 'IMAGES_CONVERT_TO_WEBP' : 'plug'), 'run_dev_server'));
 
 
 
-/*************************************************************************************************/
-/********************************************* DIST: *********************************************/
-/*************************************************************************************************/
+/***********************************************************************************************************************************************/
+/******************************************************************** DIST: ********************************************************************/
+/***********************************************************************************************************************************************/
 gulp.task('clean_dist', function () {
     //сначала очистка
     return gulp.src(DIST.ROOT, { read: true, allowEmpty: true })
