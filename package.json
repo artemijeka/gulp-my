@@ -43,7 +43,7 @@
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
-    "fullpage.js": "^3.1.2",
+    "fullpage.js": "^4.0.5",
     "gulp-if": "^3.0.0",
     "gulp-uglify-es": "^3.0.0"
   }
