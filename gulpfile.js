@@ -6,7 +6,7 @@
 
  const CONFIG = {
     'IMAGES_COMPRESS_ON_DEV': true,
-    'IMAGES_CONVERT_TO_WEBP': true,
+    'IMAGES_CONVERT_TO_WEBP': false,
     'MOVE_FILES': true,
     'CLEAN_DEV': false,
     'HTML_MIN': false,
@@ -406,8 +406,8 @@ gulp.task('imagemin', function () {
     return gulp.src(SRC.IMAGES_ALL)
         .pipe(newer(DEV.IMAGES))
         .pipe(imagemin([
-            pngquant({ quality: [0.90, 0.92] }),
-            mozjpeg({ quality: 91, progressive: true })
+            pngquant({ quality: [0.92, 0.94] }),
+            mozjpeg({ quality: 93, progressive: true })
         ]))
         .pipe(gulp.dest(DEV.IMAGES))
 });
@@ -420,7 +420,7 @@ gulp.task("images_convert_to_webp", function () {
         .pipe(
             imagemin([
                 webp({
-                    quality: 91
+                    quality: 93
                 })
             ]))
         .pipe(extReplace(".webp"))
