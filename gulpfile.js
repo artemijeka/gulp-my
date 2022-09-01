@@ -4,7 +4,7 @@
 
 
 
- const CONFIG = {
+const CONFIG = {
     'IMAGES_COMPRESS_ON_DEV': true,
     'IMAGES_CONVERT_TO_WEBP': false,
     'MOVE_FILES': true,
